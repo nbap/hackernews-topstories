@@ -9,6 +9,7 @@ defmodule HnAggregator.Application do
     children = [
       # Starts a worker by calling: HnAggregator.Worker.start_link(arg)
       # {HnAggregator.Worker, arg}
+      HnAggregator.Hnews.Fetcher,
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
