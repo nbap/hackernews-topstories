@@ -4,7 +4,7 @@ defmodule HnAggregator.Hnews.Fetcher do
   use Task
 
   alias HnAggregator.Hnews.Api
-
+  alias HnAggregator.Kv
   # To prevent hammering hnews's api, apply a little sleep between requests
   @sleep_between_requests 500
   @yield_tasks_interval 4 * 60 * 1000
@@ -35,6 +35,8 @@ defmodule HnAggregator.Hnews.Fetcher do
         |> Enum.slice(0..(fetch_max - 1))
         |> fetch_stories()
 
+      Kv.insert(:topstories_ids, Enum.map(topstories, fn story -> story["id"] end))
+      Kv.insert(:topstories_ordered, topstories)
       Logger.info("#{length(topstories)} top stories retrieved")
 
       :ok
