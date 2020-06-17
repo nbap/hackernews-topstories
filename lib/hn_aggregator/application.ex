@@ -12,6 +12,8 @@ defmodule HnAggregator.Application do
       HnAggregator.Kv,
       HnAggregator.Hnews.Fetcher,
       {Plug.Cowboy, scheme: :http, plug: nil, options: [port: 4001, dispatch: dispatch()]},
+      {Registry,
+       keys: :duplicate, name: Registry.EventWatcher, partitions: System.schedulers_online()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -19,10 +21,12 @@ defmodule HnAggregator.Application do
     opts = [strategy: :one_for_one, name: HnAggregator.Supervisor]
     Supervisor.start_link(children, opts)
   end
+
   defp dispatch() do
     [
       {:_,
        [
+         {"/ws/[...]", HnAggregator.Ws, %{}},
          {:_, Plug.Cowboy.Handler, {HnAggregator.Controller, []}}
        ]}
     ]

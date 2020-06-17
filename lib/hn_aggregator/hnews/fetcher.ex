@@ -39,6 +39,14 @@ defmodule HnAggregator.Hnews.Fetcher do
       Kv.insert(:topstories_ordered, topstories)
       Logger.info("#{length(topstories)} top stories retrieved")
 
+      Registry.dispatch(Registry.EventWatcher, "evt_topstories", fn entries ->
+        for {pid, _} <- entries do
+          if pid != self() do
+            Process.send(pid, topstories, [])
+          end
+        end
+      end)
+
       :ok
     else
       {:error, response} ->
