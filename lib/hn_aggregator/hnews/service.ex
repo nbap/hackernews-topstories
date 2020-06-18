@@ -12,7 +12,7 @@ defmodule HnAggregator.Hnews.Service do
           {stories, inserted_at}
 
         _ ->
-          {[], nil}
+          {[], DateTime.from_unix!(0)}
       end
 
     %{stories: stories, inserted_at: inserted_at}
@@ -23,8 +23,10 @@ defmodule HnAggregator.Hnews.Service do
   end
 
   def get_story(story_id) when is_integer(story_id) do
-    %{stories: stories, inserted_at: inserted_at} = get_topstories()
-    story = Enum.find(stories, fn story -> story["id"] == story_id end)
+    %{stories: stories, inserted_at: _} = get_topstories()
+    story = Enum.find(stories, fn story -> story["id"] == story_id end) || %{}
+    inserted_at = Map.get(story, :inserted_at, DateTime.from_unix!(0))
+
     %{story: story, inserted_at: inserted_at}
   end
 end
