@@ -25,6 +25,7 @@ defmodule HnAggregator.MixProject do
       {:httpoison, "~> 1.6"},
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.0"},
+      {:plug_attack, git: "https://github.com/nbap/plug_attack.git", branch: "updates"},
       {:dialyxir, "~> 1.0", only: [:dev], runtime: false}
     ]
   end

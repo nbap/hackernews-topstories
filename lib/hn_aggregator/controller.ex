@@ -4,6 +4,7 @@ defmodule HnAggregator.Controller do
   alias HnAggregator.Hnews
   alias HnAggregator.Paginator
 
+  plug(HnAggregator.ThrottlePlug)
   plug(:match)
   plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
   plug(:respond_json)

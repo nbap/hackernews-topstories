@@ -7,13 +7,12 @@ defmodule HnAggregator.Application do
 
   def start(_type, _args) do
     children = [
-      # Starts a worker by calling: HnAggregator.Worker.start_link(arg)
-      # {HnAggregator.Worker, arg}
+      {PlugAttack.Storage.Ets, name: HnAggregator.ThrottlePlug.Storage, clean_period: 5_000},
       HnAggregator.Kv,
       HnAggregator.Hnews.Fetcher,
-      {Plug.Cowboy, scheme: :http, plug: nil, options: [port: 4001, dispatch: dispatch()]},
       {Registry,
-       keys: :duplicate, name: Registry.EventWatcher, partitions: System.schedulers_online()}
+       keys: :duplicate, name: Registry.EventWatcher, partitions: System.schedulers_online()},
+      {Plug.Cowboy, scheme: :http, plug: nil, options: [port: 4001, dispatch: dispatch()]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
