@@ -1,4 +1,4 @@
-defmodule HnAggregator.Application do
+defmodule NewsAggregator.Application do
   # See https://hexdocs.pm/elixir/Application.html
   # for more information on OTP Applications
   @moduledoc false
@@ -8,11 +8,16 @@ defmodule HnAggregator.Application do
   def start(_type, _args) do
     children = [
       {PlugAttack.Storage.Ets,
-       name: Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:storage],
+       name:
+         Application.fetch_env!(:news_aggregator, NewsAggregator.Endpoint.ThrottlePlug)[
+           :storage
+         ],
        clean_period:
-         Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:clean_period]},
-      HnAggregator.Kv,
-      HnAggregator.Hnews.Fetcher,
+         Application.fetch_env!(:news_aggregator, NewsAggregator.Endpoint.ThrottlePlug)[
+           :clean_period
+         ]},
+      Toolkit.DataStore,
+      NewsAggregator.HackerNews.FetchBot,
       {Registry,
        keys: :duplicate,
        name: Registry.EventWatcher,
@@ -22,7 +27,7 @@ defmodule HnAggregator.Application do
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: HnAggregator.Supervisor]
+    opts = [strategy: :one_for_one, name: NewsAggregator.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
@@ -30,8 +35,8 @@ defmodule HnAggregator.Application do
     [
       {:_,
        [
-         {"/ws/[...]", HnAggregator.Ws, %{}},
-         {:_, Plug.Cowboy.Handler, {HnAggregator.Controller, []}}
+         {"/ws/[...]", NewsAggregator.Endpoint.Ws, %{}},
+         {:_, Plug.Cowboy.Handler, {NewsAggregator.Endpoint.Web, []}}
        ]}
     ]
   end

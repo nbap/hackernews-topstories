@@ -1,7 +1,7 @@
-defmodule HnAggregator.Ws do
+defmodule NewsAggregator.Endpoint.Ws do
   @behaviour :cowboy_websocket
 
-  alias HnAggregator.Hnews
+  alias NewsAggregator.HackerNews
 
   def init(req, opts) do
     {:cowboy_websocket, req, opts}
@@ -13,7 +13,7 @@ defmodule HnAggregator.Ws do
 
   def websocket_handle({:text, "topstories"}, state) do
     {:ok, _} = Registry.register(Registry.EventWatcher, "evt_topstories", [])
-    %{stories: stories, inserted_at: _} = Hnews.Service.get_topstories()
+    %{stories: stories, inserted_at: _} = HackerNews.get_topstories()
 
     {:reply, {:text, Jason.encode!(stories)}, state}
   end

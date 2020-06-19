@@ -1,7 +1,7 @@
-defmodule HnAggregator.Kv do
+defmodule Toolkit.DataStore do
   use GenServer
 
-  @table_name Application.fetch_env!(:hn_aggregator, __MODULE__)[:kv_table_name]
+  @table_name Application.fetch_env!(:news_aggregator, __MODULE__)[:datastore_table_name]
 
   def start_link(opts \\ []) do
     with {:ok, _} <- setup_table() do
@@ -31,6 +31,7 @@ defmodule HnAggregator.Kv do
     :ets.lookup(@table_name, key)
   end
 
+  @spec find_topstories :: [tuple]
   def find_topstories() do
     find(:topstories_ordered)
   end

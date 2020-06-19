@@ -1,9 +1,11 @@
-defmodule HnAggregator.ThrottlePlug do
+defmodule NewsAggregator.Endpoint.ThrottlePlug do
   use PlugAttack
 
   import Plug.Conn
 
-  @storage Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:storage]
+  @storage Application.fetch_env!(:news_aggregator, NewsAggregator.Endpoint.ThrottlePlug)[
+             :storage
+           ]
 
   rule "do not throttle localhost", conn do
     allow(conn.remote_ip == {127, 0, 0, 1})

@@ -1,17 +1,17 @@
-defmodule HnAggregator.Controller do
+defmodule NewsAggregator.Endpoint.Web do
   use Plug.Router
 
-  alias HnAggregator.Hnews
-  alias HnAggregator.Paginator
+  alias NewsAggregator.HackerNews
+  alias Toolkit.Paginator
 
-  plug(HnAggregator.ThrottlePlug)
+  plug(NewsAggregator.Endpoint.ThrottlePlug)
   plug(:match)
   plug(Plug.Parsers, parsers: [:json], json_decoder: Jason)
   plug(:respond_json)
   plug(:dispatch)
 
   get "/stories" do
-    %{stories: stories, inserted_at: inserted_at} = Hnews.Service.get_topstories()
+    %{stories: stories, inserted_at: inserted_at} = HackerNews.get_topstories()
 
     page =
       conn.params
@@ -29,7 +29,7 @@ defmodule HnAggregator.Controller do
   end
 
   get "/stories/:story_id" do
-    %{story: story, inserted_at: inserted_at} = Hnews.Service.get_story(story_id)
+    %{story: story, inserted_at: inserted_at} = HackerNews.get_story(story_id)
 
     conn
     |> put_resp_header("last-modified", DateTime.to_string(inserted_at))

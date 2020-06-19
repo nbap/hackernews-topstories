@@ -1,0 +1,2 @@
+defmodule NewsAggregator do
+end
