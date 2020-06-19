@@ -21,7 +21,6 @@ defmodule NewsAggregator.Endpoint.Web do
     paginator = Paginator.paginate(stories, page)
 
     conn
-    |> put_resp_header("last-modified", DateTime.to_string(inserted_at))
     |> put_resp_header("x-total-pages", Integer.to_string(paginator.total_pages))
     |> put_resp_header("x-current-page", Integer.to_string(paginator.current_page))
     |> put_resp_header("last-modified", DateTime.to_string(inserted_at))
