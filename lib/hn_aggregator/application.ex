@@ -14,7 +14,9 @@ defmodule HnAggregator.Application do
       HnAggregator.Kv,
       HnAggregator.Hnews.Fetcher,
       {Registry,
-       keys: :duplicate, name: Registry.EventWatcher, partitions: System.schedulers_online()},
+       keys: :duplicate,
+       name: Registry.EventWatcher,
+       partitions: System.schedulers_online()},
       {Plug.Cowboy, scheme: :http, plug: nil, options: [port: 4001, dispatch: dispatch()]}
     ]
 

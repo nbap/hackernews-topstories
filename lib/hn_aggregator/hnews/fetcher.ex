@@ -51,7 +51,10 @@ defmodule HnAggregator.Hnews.Fetcher do
       :ok
     else
       {:error, response} ->
-        Logger.error("An error occurred when retrieving topstories \n #{inspect(response)}")
+        Logger.error(
+          "An error occurred when retrieving topstories \n #{inspect(response)}"
+        )
+
         :error
 
       _ ->
@@ -83,7 +86,10 @@ defmodule HnAggregator.Hnews.Fetcher do
           response.body
         else
           error ->
-            Logger.error("An error occurred when retrieving an story \n #{inspect(error)}")
+            Logger.error(
+              "An error occurred when retrieving an story \n #{inspect(error)}"
+            )
+
             :error
         end
 

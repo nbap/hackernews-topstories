@@ -40,5 +40,6 @@ defmodule HnAggregator.Controller do
     send_resp(conn, 404, Jason.encode!(%{error: "Not Found"}))
   end
 
-  defp respond_json(%Plug.Conn{} = conn, _), do: put_resp_content_type(conn, "application/json")
+  defp respond_json(%Plug.Conn{} = conn, _),
+    do: put_resp_content_type(conn, "application/json")
 end
