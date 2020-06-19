@@ -1,7 +1,7 @@
 defmodule HnAggregator.Kv do
   use GenServer
 
-  @table_name Application.get_env(:hn_aggregator, :kv_table_name)
+  @table_name Application.fetch_env!(:hn_aggregator, __MODULE__)[:kv_table_name]
 
   def start_link(opts \\ []) do
     with {:ok, _} <- setup_table() do

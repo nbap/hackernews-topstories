@@ -1,7 +1,7 @@
 defmodule HnAggregator.Paginator do
-  alias __MODULE__
-
-  @default_page_size 2
+  @default_page_size Application.fetch_env!(:hn_aggregator, __MODULE__)[
+                       :default_page_size
+                     ]
 
   def paginate(content, page \\ 1) when is_list(content) and page > 0 do
     content_length = length(content)

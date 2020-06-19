@@ -7,7 +7,10 @@ defmodule HnAggregator.Application do
 
   def start(_type, _args) do
     children = [
-      {PlugAttack.Storage.Ets, name: HnAggregator.ThrottlePlug.Storage, clean_period: 5_000},
+      {PlugAttack.Storage.Ets,
+       name: Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:storage],
+       clean_period:
+         Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:clean_period]},
       HnAggregator.Kv,
       HnAggregator.Hnews.Fetcher,
       {Registry,

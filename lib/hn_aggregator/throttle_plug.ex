@@ -3,7 +3,7 @@ defmodule HnAggregator.ThrottlePlug do
 
   import Plug.Conn
 
-  @storage HnAggregator.ThrottlePlug.Storage
+  @storage Application.fetch_env!(:hn_aggregator, HnAggregator.ThrottlePlug)[:storage]
 
   rule "do not throttle localhost", conn do
     allow(conn.remote_ip == {127, 0, 0, 1})

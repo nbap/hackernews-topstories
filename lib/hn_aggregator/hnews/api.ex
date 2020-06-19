@@ -1,8 +1,9 @@
 defmodule HnAggregator.Hnews.Api do
   use HTTPoison.Base
 
-  @base_url "https://hacker-news.firebaseio.com/v0/"
   alias __MODULE__
+
+  @base_url Application.fetch_env!(:hn_aggregator, __MODULE__)[:base_url]
 
   def process_request_url(resource) do
     @base_url <> resource

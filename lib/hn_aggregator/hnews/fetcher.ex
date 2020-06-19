@@ -5,11 +5,12 @@ defmodule HnAggregator.Hnews.Fetcher do
 
   alias HnAggregator.Hnews.Api
   alias HnAggregator.Kv
+
+  @config Application.fetch_env!(:hn_aggregator, __MODULE__)
   # To prevent hammering hnews's api, apply a little sleep between requests
-  @sleep_between_requests 500
-  @yield_tasks_interval 4 * 60 * 1000
-  # Application.get_env(:hn_aggregator, :news_fetcher_interval)
-  @fetcher_interval 15_000
+  @sleep_between_requests @config[:sleep_between_requests]
+  @yield_tasks_interval @config[:yield_tasks_interval]
+  @fetcher_interval @config[:news_fetcher_interval]
 
   def start_link(opts) do
     Task.start_link(__MODULE__, :run, opts)
