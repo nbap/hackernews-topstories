@@ -14,3 +14,5 @@ config :news_aggregator, Toolkit.Paginator, default_page_size: 10
 config :news_aggregator, NewsAggregator.Endpoint.ThrottlePlug,
   storage: NewsAggregator.Endpoint.ThrottlePlug.Storage,
   clean_period: 60_000
+
+import_config "#{Mix.env()}.exs"
